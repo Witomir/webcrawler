@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+}
+
+group 'pl.witomir'
+
+sourceCompatibility = 1.11
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile (
+        "com.google.inject:guice:4.2.2",
+        "com.beust:jcommander:1.71",
+    )
+    testImplementation('org.junit.jupiter:junit-jupiter:5.5.2')
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '3.1.0'
+    testCompile group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.1.0'
+}
+
+test {
+	useJUnitPlatform()
+}
