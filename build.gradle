@@ -24,6 +24,9 @@ dependencies {
     compile(
             "com.google.inject:guice:4.2.2",
             "com.beust:jcommander:1.71",
+            'org.springframework:spring-web:5.2.0.RELEASE',
+            'org.jsoup:jsoup:1.12.1',
+
     )
     testImplementation('org.junit.jupiter:junit-jupiter:5.5.2')
     testCompile group: 'org.mockito', name: 'mockito-core', version: '3.1.0'

@@ -8,6 +8,7 @@ public class DiModule implements Module {
 
     @Override
     public void configure(Binder binder) {
-        binder.bind(JCommander.Builder.class).toInstance(JCommander.newBuilder());
+        binder.bind(JCommander.Builder.class)
+                .toInstance(JCommander.newBuilder());
     }
 }
