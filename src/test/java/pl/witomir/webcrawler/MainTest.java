@@ -11,12 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class MainTest {
 
     @Test
-    public void runApplication() {
-        Main.main(new String[]{"-starting-url", "http://example.com"});
-    }
-
-    @Test
-    public void throwsExceptionWhenRanWithoutParameter() {
+    public void applicationContextLoadsAndThrowsExceptionAboutWrongParameters() {
         assertThrows(ParameterException.class, () -> Main.main(new String[]{}));
     }
 }

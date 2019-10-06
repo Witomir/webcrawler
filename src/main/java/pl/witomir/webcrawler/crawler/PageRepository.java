@@ -16,6 +16,9 @@ public class PageRepository {
 
     public Document fetchPage(String pageUrl) {
         String pageHtml = restTemplate.getForObject(pageUrl, String.class);
-        return htmlParser.parse(pageHtml);
+        Document document = htmlParser.parse(pageHtml);
+        document.setBaseUri(pageUrl);
+
+        return document;
     }
 }

@@ -23,14 +23,18 @@ jar {
 dependencies {
     compile(
             "com.google.inject:guice:4.2.2",
+            "com.google.code.gson:gson:2.8.6",
             "com.beust:jcommander:1.71",
             'org.springframework:spring-web:5.2.0.RELEASE',
             'org.jsoup:jsoup:1.12.1',
 
     )
     testImplementation('org.junit.jupiter:junit-jupiter:5.5.2')
-    testCompile group: 'org.mockito', name: 'mockito-core', version: '3.1.0'
-    testCompile group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.1.0'
+    testCompile(
+        'org.mockito:mockito-core:3.1.0',
+        'com.google.guava:guava:28.1-jre',
+        'org.mockito:mockito-junit-jupiter:3.1.0'
+    )
 }
 
 test {

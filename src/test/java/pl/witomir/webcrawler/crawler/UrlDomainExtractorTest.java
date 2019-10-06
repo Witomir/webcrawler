@@ -9,23 +9,22 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import org.mockito.InjectMocks;
 
 import java.util.stream.Stream;
 
 @ExtendWith(MockitoExtension.class)
-class DomainExtractorTest {
+class UrlDomainExtractorTest {
 
     @InjectMocks
-    DomainExtractor domainExtractor;
+    UrlDomainExtractor urlDomainExtractor;
 
 
     @ParameterizedTest
     @MethodSource("domainNameDataProvider")
     void testExtraction(String url, String expectedDomain) {
-        assertEquals(expectedDomain, domainExtractor.getDomainName(url));
+        assertEquals(expectedDomain, urlDomainExtractor.getDomainName(url));
     }
 
     private static Stream<Arguments> domainNameDataProvider() {

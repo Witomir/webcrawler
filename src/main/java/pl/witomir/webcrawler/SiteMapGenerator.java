@@ -23,7 +23,7 @@ public class SiteMapGenerator {
 
     public void generateSiteMap(String[] args) {
         String startingUrl = argumentsParser.parseArguments(args).getStartingUrl();
-        SiteMap siteMap = crawler.generateMapStartingOn(startingUrl);
+        SiteMap siteMap = crawler.generateSiteMapStartingOn(startingUrl);
         consoleRenderer.renderResults(siteMap);
     }
 }

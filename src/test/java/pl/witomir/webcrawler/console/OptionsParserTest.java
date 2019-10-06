@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
-class ArgumentsParserTest {
+class OptionsParserTest {
 
     private ArgumentsParser parser;
 
@@ -27,9 +27,9 @@ class ArgumentsParserTest {
     void parseArgumentsCorrectlyParsesFileds(String startingUrl) {
         String[] args = {"-starting-url", startingUrl};
 
-        Arguments arguments = parser.parseArguments(args);
+        Options options = parser.parseArguments(args);
 
-        assertEquals(startingUrl, arguments.getStartingUrl());
+        assertEquals(startingUrl, options.getStartingUrl());
     }
 
     @Test

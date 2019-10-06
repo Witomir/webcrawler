@@ -5,7 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pl.witomir.webcrawler.console.Arguments;
+import pl.witomir.webcrawler.console.Options;
 import pl.witomir.webcrawler.console.ArgumentsParser;
 import pl.witomir.webcrawler.crawler.Crawler;
 import pl.witomir.webcrawler.domain.SiteMap;
@@ -15,7 +15,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class SiteMapGeneratorTest {
+class SiteMapGeneratorUnitTest {
 
     @Mock
     private ArgumentsParser argumentsParser;
@@ -27,7 +27,7 @@ class SiteMapGeneratorTest {
     private Crawler crawler;
 
     @Mock
-    private Arguments arguments;
+    private Options options;
 
     @InjectMocks
     private SiteMapGenerator siteMapGenerator;
@@ -38,9 +38,9 @@ class SiteMapGeneratorTest {
         SiteMap siteMap = new SiteMap();
         var args = new String[]{startingUrl};
 
-        when(argumentsParser.parseArguments(args)).thenReturn(arguments);
-        when(arguments.getStartingUrl()).thenReturn(startingUrl);
-        when(crawler.generateMapStartingOn(startingUrl)).thenReturn(siteMap);
+        when(argumentsParser.parseArguments(args)).thenReturn(options);
+        when(options.getStartingUrl()).thenReturn(startingUrl);
+        when(crawler.generateSiteMapStartingOn(startingUrl)).thenReturn(siteMap);
 
         siteMapGenerator.generateSiteMap(args);
 

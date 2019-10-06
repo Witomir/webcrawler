@@ -5,7 +5,7 @@ import pl.witomir.webcrawler.domain.WrongDomainException;
 import java.net.URI;
 import java.util.Objects;
 
-public class DomainExtractor {
+public class UrlDomainExtractor {
 
     private static final String WWW_PREFIX = "www.";
 

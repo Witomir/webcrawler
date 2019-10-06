@@ -12,14 +12,14 @@ public class ArgumentsParser {
         this.builder = builder;
     }
 
-    public Arguments parseArguments(String[] args) {
-        Arguments arguments = new Arguments();
+    public Options parseArguments(String[] args) {
+        Options options = new Options();
 
         builder
-                .addObject(arguments)
+                .addObject(options)
                 .build()
                 .parse(args);
 
-        return arguments;
+        return options;
     }
 }
