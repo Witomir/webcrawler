@@ -27,7 +27,7 @@ dependencies {
             "com.beust:jcommander:1.71",
             'org.springframework:spring-web:5.2.0.RELEASE',
             'org.jsoup:jsoup:1.12.1',
-
+            'ch.qos.logback:logback-classic:1.2.3'
     )
     testImplementation('org.junit.jupiter:junit-jupiter:5.5.2')
     testCompile(

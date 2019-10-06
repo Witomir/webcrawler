@@ -4,6 +4,8 @@ import pl.witomir.webcrawler.domain.WrongDomainException;
 
 import java.net.URI;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class UrlDomainExtractor {
 
@@ -21,5 +23,12 @@ public class UrlDomainExtractor {
         } catch (Exception e) {
             throw new WrongDomainException(e);
         }
+    }
+
+    public Set<String> removeVisitedLinks(Set<String> linksToCheck, Set<String> visitedPages) {
+        return linksToCheck
+                .stream()
+                .filter(link -> !visitedPages.contains(link))
+                .collect(Collectors.toSet());
     }
 }

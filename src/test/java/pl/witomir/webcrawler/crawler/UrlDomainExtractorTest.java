@@ -1,18 +1,19 @@
 package pl.witomir.webcrawler.crawler;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.junit.jupiter.api.extension.ExtendWith;
-
-import static org.mockito.Mockito.mock;
-
 import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
+import pl.witomir.webcrawler.domain.WrongDomainException;
 
+import java.util.Set;
 import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 class UrlDomainExtractorTest {
@@ -25,6 +26,19 @@ class UrlDomainExtractorTest {
     @MethodSource("domainNameDataProvider")
     void testExtraction(String url, String expectedDomain) {
         assertEquals(expectedDomain, urlDomainExtractor.getDomainName(url));
+    }
+
+    @Test
+    void malformedLinkThrowsWrongDomainException() {
+        assertThrows(WrongDomainException.class, () -> urlDomainExtractor.getDomainName("non url"));
+    }
+
+    @Test
+    void testLinksFiltering() {
+        var visitedLinks = Set.of("1", "2", "3");
+        var linksInDomain = Set.of("2", "3", "4", "5");
+
+        assertEquals(Set.of("4", "5"), urlDomainExtractor.removeVisitedLinks(linksInDomain, visitedLinks));
     }
 
     private static Stream<Arguments> domainNameDataProvider() {

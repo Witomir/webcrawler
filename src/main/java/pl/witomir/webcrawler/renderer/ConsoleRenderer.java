@@ -2,7 +2,7 @@ package pl.witomir.webcrawler.renderer;
 
 import com.google.gson.Gson;
 import com.google.inject.Inject;
-import pl.witomir.webcrawler.domain.SiteMap;
+import pl.witomir.webcrawler.domain.Site;
 
 public class ConsoleRenderer {
 
@@ -13,7 +13,7 @@ public class ConsoleRenderer {
         this.gson = gson;
     }
 
-    public void renderResults (SiteMap siteMap) {
-        System.out.println(gson.toJson(siteMap));
+    public void renderResults (Site site) {
+        System.out.println(gson.toJson(site));
     }
 }

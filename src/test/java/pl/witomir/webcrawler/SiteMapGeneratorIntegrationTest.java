@@ -20,7 +20,6 @@ import java.nio.charset.Charset;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -61,8 +60,7 @@ class SiteMapGeneratorIntegrationTest {
     @Test
     @MockitoSettings(strictness = Strictness.LENIENT)
     void generateSiteMap() {
-        String startingUrl = "http://www.example.com";
-        var args = new String[]{"-starting-url", startingUrl};
+        var args = new String[]{"-starting-url", Fixtures.START_PAGE};
 
         when(restTemplate.getForObject(anyString(), eq(String.class))).thenReturn("<html></html>");
         when(restTemplate.getForObject(Fixtures.START_PAGE, String.class)).thenReturn(startPage);
@@ -74,7 +72,7 @@ class SiteMapGeneratorIntegrationTest {
     }
 
     private static class Fixtures {
-        private static final String START_PAGE = "http://www.example.com";
+        private static final String START_PAGE = "http://www.example.com/";
         private static final String ABOUT_PAGE = "http://www.example.com/about";
         private static final String SEARCH_PAGE = "http://www.example.com/search.html";
         private static final String CONTACT_PAGE = "http://www.example.com/contact";

@@ -8,7 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import pl.witomir.webcrawler.console.Options;
 import pl.witomir.webcrawler.console.ArgumentsParser;
 import pl.witomir.webcrawler.crawler.Crawler;
-import pl.witomir.webcrawler.domain.SiteMap;
+import pl.witomir.webcrawler.domain.Site;
 import pl.witomir.webcrawler.renderer.ConsoleRenderer;
 
 import static org.mockito.Mockito.verify;
@@ -35,7 +35,7 @@ class SiteMapGeneratorUnitTest {
     @Test
     void generateSiteMap() {
         String startingUrl = "test args";
-        SiteMap siteMap = new SiteMap();
+        Site siteMap = new Site();
         var args = new String[]{startingUrl};
 
         when(argumentsParser.parseArguments(args)).thenReturn(options);

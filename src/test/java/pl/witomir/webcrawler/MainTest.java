@@ -14,4 +14,9 @@ class MainTest {
     public void applicationContextLoadsAndThrowsExceptionAboutWrongParameters() {
         assertThrows(ParameterException.class, () -> Main.main(new String[]{}));
     }
+
+    @Test
+    public void applicationContextLoads() {
+        Main.main(new String[]{"-starting-url", "https://wiprodigital.com/"});
+    }
 }

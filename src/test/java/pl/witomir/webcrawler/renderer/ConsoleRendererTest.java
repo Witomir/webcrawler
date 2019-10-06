@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pl.witomir.webcrawler.domain.SiteMap;
+import pl.witomir.webcrawler.domain.Site;
 
 import static org.mockito.Mockito.verify;
 
@@ -21,7 +21,7 @@ class ConsoleRendererTest {
 
     @Test
     void renderResults() {
-        consoleRenderer.renderResults(new SiteMap());
-        verify(gson).toJson(new SiteMap());
+        consoleRenderer.renderResults(new Site());
+        verify(gson).toJson(new Site());
     }
 }

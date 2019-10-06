@@ -13,17 +13,20 @@ import org.mockito.InjectMocks;
 
 @ExtendWith(MockitoExtension.class)
 class HtmlParserTest {
+
     private final static String TEST_ID = "test-id";
+    private static final String HTML_TEMPLATE = "<html><body><p id=\"%s\">%s</p></body></html>";
+    private static final String TEXT_CONTENT = "Parsed HTML";
+
+    private static final String HTML = String.format(HTML_TEMPLATE, TEST_ID, TEXT_CONTENT);
 
     @InjectMocks
     HtmlParser htmlParser;
 
     @Test
     public void parseTest() {
-        String html = String.format("<html><body><p id=\"%s\">Parsed HTML</p></body></html>", TEST_ID);
+        Document doc = htmlParser.parse(HTML);
 
-        Document doc = htmlParser.parse(html);
-
-        assertEquals("Parsed HTML", doc.getElementById(TEST_ID).text());
+        assertEquals(TEXT_CONTENT, doc.getElementById(TEST_ID).text());
     }
 }
