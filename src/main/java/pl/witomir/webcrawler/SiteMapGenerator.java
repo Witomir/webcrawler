@@ -4,8 +4,12 @@ import com.google.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import pl.witomir.webcrawler.console.ArgumentsParser;
 import pl.witomir.webcrawler.crawler.Crawler;
-import pl.witomir.webcrawler.domain.Site;
-import pl.witomir.webcrawler.renderer.ConsoleRenderer;
+import pl.witomir.webcrawler.domain.Page;
+import pl.witomir.webcrawler.view.ViewModel;
+import pl.witomir.webcrawler.view.ViewModelBuilder;
+import pl.witomir.webcrawler.view.renderer.ConsoleRenderer;
+
+import java.util.Set;
 
 @Slf4j
 public class SiteMapGenerator {
@@ -13,24 +17,29 @@ public class SiteMapGenerator {
     private ArgumentsParser argumentsParser;
     private Crawler crawler;
     private ConsoleRenderer consoleRenderer;
+    private ViewModelBuilder viewModelBuilder;
 
     @Inject
     public SiteMapGenerator(ArgumentsParser argumentsParser,
                             Crawler crawler,
-                            ConsoleRenderer consoleRenderer) {
+                            ConsoleRenderer consoleRenderer,
+                            ViewModelBuilder viewModelBuilder) {
         this.argumentsParser = argumentsParser;
         this.crawler = crawler;
         this.consoleRenderer = consoleRenderer;
+        this.viewModelBuilder = viewModelBuilder;
     }
 
     public void generateSiteMap(String[] args) {
-        log.debug("Parsing program arguments");
         String startingUrl = argumentsParser.parseArguments(args).getStartingUrl();
 
-        log.debug("Starting generation of site map");
-        Site siteMap = crawler.generateSiteMapStartingOn(startingUrl);
+        log.info("Starting generation of site map");
+        Set<Page> pageMap = crawler.getAllPagesOnTheSameDomainStartingOn(startingUrl);
 
-        log.debug("Rendering resutls");
-        consoleRenderer.renderResults(siteMap);
+        log.info("Crawling completed");
+        ViewModel viewModel = viewModelBuilder.build(pageMap);
+
+        log.info("Rendering resutls");
+        consoleRenderer.renderResults(viewModel);
     }
 }

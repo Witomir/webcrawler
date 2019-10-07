@@ -18,23 +18,25 @@ public class DocumentLinkResolver {
     private static final String SELECTOR_FOR_IMAGES_AND_SCRIPTS = "[src]";
     private static final String SELECTOR_FOR_CSS = "link[href]";
 
-    private UrlDomainExtractor urlDomainExtractor;
+    private UrlUtil urlUtil;
 
     @Inject
-    public DocumentLinkResolver(UrlDomainExtractor urlDomainExtractor) {
-        this.urlDomainExtractor = urlDomainExtractor;
+    public DocumentLinkResolver(UrlUtil urlUtil) {
+        this.urlUtil = urlUtil;
     }
 
-    public Set<String> getAllLinksToSameDomain(Document document, String domain) {
+    public Set<String> getAllInternalLinks(Document document) {
         var linksList = new HashSet<String>();
         Elements links = document.getElementsByTag(LINK_TAG_NAME);
 
         for (var link : links) {
-            String src = link.absUrl(LINK_HREF_ATTRIBUTE);
             try {
-                String srcDomainName = urlDomainExtractor.getDomainName(src);
-                if (domain.equalsIgnoreCase(srcDomainName)) {
-                    linksList.add(src);
+                String src = link.absUrl(LINK_HREF_ATTRIBUTE);
+                String rootPageDomain = urlUtil.getDomainName(document.baseUri());
+                String srcDomainName = urlUtil.getDomainName(src);
+
+                if (rootPageDomain.equalsIgnoreCase(srcDomainName)) {
+                    linksList.add(urlUtil.removeAnchorFromLink(src));
                 }
             } catch (WrongDomainException e) {
                 // broken link, ignoring
@@ -44,14 +46,21 @@ public class DocumentLinkResolver {
         return linksList;
     }
 
-    public Set<String> getAllExternalLinks(Document document, String domain) {
-        var linksList = new HashSet<String>();
+    public Set<String> getAllExternalLinks(Document document) {
         Elements links = document.getElementsByTag(LINK_TAG_NAME);
+        var linksList = new HashSet<String>();
 
         for (var link : links) {
-            String src = link.absUrl(LINK_HREF_ATTRIBUTE);
-            if (!src.contains(domain)) {
-                linksList.add(src);
+            try {
+                String linkSrc = link.absUrl(LINK_HREF_ATTRIBUTE);
+                String linkDomain = urlUtil.getDomainName(linkSrc);
+                String rootPageDomain = urlUtil.getDomainName(document.baseUri());
+
+                if (!rootPageDomain.equalsIgnoreCase(linkDomain)) {
+                    linksList.add(linkSrc);
+                }
+            } catch (WrongDomainException e) {
+                // broken link, ignoring
             }
         }
 

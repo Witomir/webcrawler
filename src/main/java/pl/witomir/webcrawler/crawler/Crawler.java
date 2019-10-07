@@ -3,57 +3,51 @@ package pl.witomir.webcrawler.crawler;
 import com.google.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
-import pl.witomir.webcrawler.domain.Site;
+import pl.witomir.webcrawler.domain.Page;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Set;
 
 @Slf4j
 public class Crawler {
     private PageRepository pageRepository;
-    private UrlDomainExtractor urlDomainExtractor;
-    private PageLinksResolver pageLinksResolver;
+    private UrlUtil urlUtil;
+    private PageMapper pageMapper;
 
     @Inject
-    public Crawler(PageRepository pageRepository, UrlDomainExtractor urlDomainExtractor, PageLinksResolver pageLinksResolver) {
+    public Crawler(PageRepository pageRepository, UrlUtil urlUtil, PageMapper pageMapper) {
         this.pageRepository = pageRepository;
-        this.urlDomainExtractor = urlDomainExtractor;
-        this.pageLinksResolver = pageLinksResolver;
+        this.urlUtil = urlUtil;
+        this.pageMapper = pageMapper;
     }
 
-    public Site generateSiteMapStartingOn(String startUrl) {
-        var visitedPages = new HashSet<String>();
-        String domain = urlDomainExtractor.getDomainName(startUrl);
+    public Set<Page> getAllPagesOnTheSameDomainStartingOn(String startUrl) {
+        log.info("Starting from URL: {}", startUrl);
+        var visitedSites = new HashSet<Page>();
+        var discoveredPages = new HashSet<String>();
+        var pageQueue = new LinkedList<String>();
+        pageQueue.add(startUrl);
+        discoveredPages.add(startUrl);
 
-        log.debug("Using for URL: {}, the domain: {}", startUrl, domain);
-        Set<Site> sites = recursivelyFetchAllLinksOnPages(Set.of(startUrl), visitedPages, domain);
+        while (!pageQueue.isEmpty()) {
+            String currentLink = pageQueue.remove();
 
-        return sites.stream().findFirst().get();
-    }
+            log.info("Fetching page: {}", currentLink);
+            Document document = pageRepository.fetchPage(currentLink);
+            var page = pageMapper.mapFromDocument(currentLink, document);
+            Set<String> linksToSameDomain = page.getInternalLinks();
+            Set<String> linksToVisit = urlUtil.removeVisitedLinks(linksToSameDomain, discoveredPages);
 
-    private Set<Site> recursivelyFetchAllLinksOnPages(Set<String> linksToTraverse, HashSet<String> visitedPages, String domain) {
-        var sites = new HashSet<Site>();
-
-        for (String link : linksToTraverse) {
-            if (!visitedPages.contains(link)) {
-                visitedPages.add(link);
-
-                log.debug("Fetching page content: {}", link);
-                Document document = pageRepository.fetchPage(link);
-                var site = pageLinksResolver.resolvePageLinks(link, document, domain);
-
-                Set<String> linksToSameDomain = site.getSameDomainLinks();
-                Set<String> linksToVisit = urlDomainExtractor.removeVisitedLinks(linksToSameDomain, visitedPages);
-
-                if (!linksToVisit.isEmpty()) {
-                    log.debug("Page has {} children. Fetching them now...", linksToVisit.size());
-                    site.setChildPages(recursivelyFetchAllLinksOnPages(linksToVisit, visitedPages, domain));
-                }
-
-                sites.add(site);
+            if (!linksToVisit.isEmpty()) {
+                log.info("Page has {} previously unseen children. Adding them to queue...", linksToVisit.size());
+                discoveredPages.addAll(linksToVisit);
+                pageQueue.addAll(linksToVisit);
             }
+
+            visitedSites.add(page);
         }
 
-        return sites;
+        return visitedSites;
     }
 }

@@ -7,9 +7,10 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class UrlDomainExtractor {
+public class UrlUtil {
 
     private static final String WWW_PREFIX = "www.";
+    private static final char ANCHOR_CHAR = '#';
 
     public String getDomainName(String url) {
         try {
@@ -30,5 +31,13 @@ public class UrlDomainExtractor {
                 .stream()
                 .filter(link -> !visitedPages.contains(link))
                 .collect(Collectors.toSet());
+    }
+
+    public String removeAnchorFromLink(String src) {
+        if(Objects.nonNull(src) && src.indexOf(ANCHOR_CHAR) != -1){
+            return src.substring(0, src.indexOf('#'));
+        }
+
+        return src;
     }
 }

@@ -1,6 +1,7 @@
 package pl.witomir.webcrawler;
 
 import com.beust.jcommander.ParameterException;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -16,6 +17,7 @@ class MainTest {
     }
 
     @Test
+    @Disabled
     public void applicationContextLoads() {
         Main.main(new String[]{"-starting-url", "https://wiprodigital.com/"});
     }

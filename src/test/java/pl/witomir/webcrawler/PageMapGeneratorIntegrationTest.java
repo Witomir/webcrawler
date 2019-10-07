@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class SiteMapGeneratorIntegrationTest {
+class PageMapGeneratorIntegrationTest {
 
     @Inject
     private SiteMapGenerator siteMapGenerator;
