@@ -39,7 +39,7 @@ public class SiteMapGenerator {
         log.info("Crawling completed");
         ViewModel viewModel = viewModelBuilder.build(pageMap);
 
-        log.info("Rendering resutls");
+        log.info("Rendering results");
         consoleRenderer.renderResults(viewModel);
     }
 }

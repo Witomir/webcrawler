@@ -24,7 +24,7 @@ class OptionsParserTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"test", "google", "http://example.com"})
-    void parseArgumentsCorrectlyParsesFileds(String startingUrl) {
+    void parseArgumentsCorrectlyParsesFields(String startingUrl) {
         String[] args = {"-starting-url", startingUrl};
 
         Options options = parser.parseArguments(args);

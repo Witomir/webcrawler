@@ -3,7 +3,7 @@ ENV APP_HOME=/root/dev/webcrawler/
 ENV GRADLE_USER_HOME .gradle-home
 WORKDIR $APP_HOME
 COPY . .
-RUN ./gradlew clean build --warn
+RUN ./gradlew clean build --info
 
 FROM openjdk:11-jre-slim
 COPY --from=build /root/dev/webcrawler/build/libs/webcrawler.jar /opt/webcrawler.jar
