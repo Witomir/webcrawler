@@ -40,10 +40,10 @@ class UrlUtilTest {
 
     @Test
     void testLinksFiltering() {
-        var visitedLinks = Set.of("1", "2", "3");
+        var allVisitedLinks = Set.of("1", "2", "3");
         var linksInDomain = Set.of("2", "3", "4", "5");
 
-        assertEquals(Set.of("4", "5"), urlUtil.removeVisitedLinks(linksInDomain, visitedLinks));
+        assertEquals(Set.of("4", "5"), urlUtil.removeVisitedLinks(linksInDomain, allVisitedLinks));
     }
 
     private static Stream<Arguments> domainNameDataProvider() {

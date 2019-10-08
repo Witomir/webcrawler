@@ -1,15 +1,12 @@
 package pl.witomir.webcrawler.crawler;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Test;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import static org.mockito.Mockito.mock;
-
 import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 class HtmlParserTest {
@@ -24,7 +21,7 @@ class HtmlParserTest {
     HtmlParser htmlParser;
 
     @Test
-    public void parseTest() {
+    void parseTest() {
         Document doc = htmlParser.parse(HTML);
 
         assertEquals(TEXT_CONTENT, doc.getElementById(TEST_ID).text());

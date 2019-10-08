@@ -19,8 +19,8 @@ public class ViewModelBuilder {
     private TreeSet<String> getAllInternalPages(Set<Page> pages) {
         var internalLinks = new TreeSet<String>();
 
-        for(Page page : pages) {
-            if(Objects.nonNull(page.getInternalLinks())){
+        for (Page page : pages) {
+            if (Objects.nonNull(page.getInternalLinks())) {
                 internalLinks.addAll(page.getInternalLinks());
             }
         }
@@ -31,8 +31,8 @@ public class ViewModelBuilder {
     private TreeSet<String> getAllExternalPages(Set<Page> pages) {
         var externalPages = new TreeSet<String>();
 
-        for(Page page : pages) {
-            if(Objects.nonNull(page.getExternalLinks())){
+        for (Page page : pages) {
+            if (Objects.nonNull(page.getExternalLinks())) {
                 externalPages.addAll(page.getExternalLinks());
             }
         }
@@ -43,8 +43,8 @@ public class ViewModelBuilder {
     private TreeSet<String> getAllStaticContentLinks(Set<Page> pages) {
         var staticContent = new TreeSet<String>();
 
-        for(Page page : pages) {
-            if(Objects.nonNull(page.getExternalLinks())){
+        for (Page page : pages) {
+            if (Objects.nonNull(page.getExternalLinks())) {
                 staticContent.addAll(page.getStaticContentLinks());
             }
         }

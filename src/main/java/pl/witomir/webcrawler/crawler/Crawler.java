@@ -2,7 +2,6 @@ package pl.witomir.webcrawler.crawler;
 
 import com.google.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.nodes.Document;
 import pl.witomir.webcrawler.domain.Page;
 
 import java.util.HashSet;
@@ -13,41 +12,37 @@ import java.util.Set;
 public class Crawler {
     private PageRepository pageRepository;
     private UrlUtil urlUtil;
-    private PageMapper pageMapper;
 
     @Inject
-    public Crawler(PageRepository pageRepository, UrlUtil urlUtil, PageMapper pageMapper) {
+    public Crawler(PageRepository pageRepository, UrlUtil urlUtil) {
         this.pageRepository = pageRepository;
         this.urlUtil = urlUtil;
-        this.pageMapper = pageMapper;
     }
 
     public Set<Page> getAllPagesOnTheSameDomainStartingOn(String startUrl) {
-        log.info("Starting from URL: {}", startUrl);
-        var visitedSites = new HashSet<Page>();
-        var discoveredPages = new HashSet<String>();
+        var visitedPages = new HashSet<Page>();
+        var allDiscoveredPages = new HashSet<String>();
         var pageQueue = new LinkedList<String>();
+
         pageQueue.add(startUrl);
-        discoveredPages.add(startUrl);
+        allDiscoveredPages.add(startUrl);
 
         while (!pageQueue.isEmpty()) {
             String currentLink = pageQueue.remove();
-
             log.info("Fetching page: {}", currentLink);
-            Document document = pageRepository.fetchPage(currentLink);
-            var page = pageMapper.mapFromDocument(currentLink, document);
-            Set<String> linksToSameDomain = page.getInternalLinks();
-            Set<String> linksToVisit = urlUtil.removeVisitedLinks(linksToSameDomain, discoveredPages);
+
+            Page page = pageRepository.fetchPage(currentLink);
+            Set<String> linksToVisit = urlUtil.removeVisitedLinks(page.getInternalLinks(), allDiscoveredPages);
 
             if (!linksToVisit.isEmpty()) {
-                log.info("Page has {} previously unseen children. Adding them to queue...", linksToVisit.size());
-                discoveredPages.addAll(linksToVisit);
+                log.debug("Page has {} previously unseen children. Adding them to queue...", linksToVisit.size());
+                allDiscoveredPages.addAll(linksToVisit);
                 pageQueue.addAll(linksToVisit);
             }
 
-            visitedSites.add(page);
+            visitedPages.add(page);
         }
 
-        return visitedSites;
+        return visitedPages;
     }
 }

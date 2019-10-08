@@ -12,14 +12,6 @@ repositories {
     jcenter()
 }
 
-jar {
-    manifest {
-        attributes(
-                'Main-Class': 'pl.witomir.webcrawler.Main'
-        )
-    }
-}
-
 dependencies {
     compile(
             "com.google.inject:guice:4.2.2",
@@ -31,12 +23,23 @@ dependencies {
     )
     testImplementation('org.junit.jupiter:junit-jupiter:5.5.2')
     testCompile(
-        'org.mockito:mockito-core:3.1.0',
-        'com.google.guava:guava:28.1-jre',
-        'org.mockito:mockito-junit-jupiter:3.1.0'
+            'org.mockito:mockito-core:3.1.0',
+            'com.google.guava:guava:28.1-jre',
+            'org.mockito:mockito-junit-jupiter:3.1.0'
     )
 }
 
 test {
     useJUnitPlatform()
+}
+
+jar {
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    manifest {
+        attributes(
+                'Main-Class': 'pl.witomir.webcrawler.Main'
+        )
+    }
 }

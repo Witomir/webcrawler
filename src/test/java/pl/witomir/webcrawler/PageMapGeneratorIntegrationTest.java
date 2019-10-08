@@ -72,9 +72,9 @@ class PageMapGeneratorIntegrationTest {
     }
 
     private static class Fixtures {
-        private static final String START_PAGE = "http://www.example.com/";
-        private static final String ABOUT_PAGE = "http://www.example.com/about";
-        private static final String SEARCH_PAGE = "http://www.example.com/search.html";
-        private static final String CONTACT_PAGE = "http://www.example.com/contact";
+        private static final String START_PAGE = "http://www.fake-domain.com/";
+        private static final String ABOUT_PAGE = "http://www.fake-domain.com/about";
+        private static final String SEARCH_PAGE = "http://www.fake-domain.com/search.html";
+        private static final String CONTACT_PAGE = "http://www.fake-domain.com/contact";
     }
 }

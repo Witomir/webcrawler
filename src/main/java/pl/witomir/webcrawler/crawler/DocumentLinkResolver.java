@@ -1,6 +1,7 @@
 package pl.witomir.webcrawler.crawler;
 
 import com.google.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import pl.witomir.webcrawler.domain.WrongDomainException;
@@ -8,6 +9,7 @@ import pl.witomir.webcrawler.domain.WrongDomainException;
 import java.util.HashSet;
 import java.util.Set;
 
+@Slf4j
 public class DocumentLinkResolver {
 
     private static final String LINK_TAG_NAME = "a";
@@ -39,7 +41,7 @@ public class DocumentLinkResolver {
                     linksList.add(urlUtil.removeAnchorFromLink(src));
                 }
             } catch (WrongDomainException e) {
-                // broken link, ignoring
+                log.debug("Link cannot be parsed: {}", link);
             }
         }
 
@@ -60,7 +62,7 @@ public class DocumentLinkResolver {
                     linksList.add(linkSrc);
                 }
             } catch (WrongDomainException e) {
-                // broken link, ignoring
+                log.debug("Link cannot be parsed: {}", link);
             }
         }
 

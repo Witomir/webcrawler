@@ -26,16 +26,16 @@ public class UrlUtil {
         }
     }
 
-    public Set<String> removeVisitedLinks(Set<String> linksToCheck, Set<String> visitedPages) {
-        return linksToCheck
+    public Set<String> removeVisitedLinks(Set<String> newlyDiscoveredLinks, Set<String> allSeenLinks) {
+        return newlyDiscoveredLinks
                 .stream()
-                .filter(link -> !visitedPages.contains(link))
+                .filter(link -> !allSeenLinks.contains(link))
                 .collect(Collectors.toSet());
     }
 
     public String removeAnchorFromLink(String src) {
-        if(Objects.nonNull(src) && src.indexOf(ANCHOR_CHAR) != -1){
-            return src.substring(0, src.indexOf('#'));
+        if (Objects.nonNull(src) && src.indexOf(ANCHOR_CHAR) != -1) {
+            return src.substring(0, src.indexOf(ANCHOR_CHAR));
         }
 
         return src;

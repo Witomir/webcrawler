@@ -13,7 +13,7 @@ public class ConsoleRenderer {
         this.gson = gson;
     }
 
-    public void renderResults (ViewModel viewModel) {
+    public void renderResults(ViewModel viewModel) {
         System.out.println("Internal links:");
         System.out.println(gson.toJson(viewModel.getInternalPages()));
         System.out.println("External links:");

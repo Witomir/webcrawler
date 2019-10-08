@@ -1,19 +1,17 @@
 package pl.witomir.webcrawler.crawler;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.web.client.RestTemplate;
+import pl.witomir.webcrawler.domain.Page;
 
-import static org.mockito.Mockito.mock;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import org.mockito.InjectMocks;
-import org.springframework.web.client.RestTemplate;
 
 @ExtendWith(MockitoExtension.class)
 class PageRepositoryTest {
@@ -25,6 +23,9 @@ class PageRepositoryTest {
     HtmlParser htmlParser;
 
     @Mock
+    PageMapper pageMapper;
+
+    @Mock
     Document document;
 
     @InjectMocks
@@ -34,14 +35,16 @@ class PageRepositoryTest {
     void fetchPage() {
         when(restTemplate.getForObject(Fixtures.URL, String.class)).thenReturn(Fixtures.PAGE_HTML);
         when(htmlParser.parse(Fixtures.PAGE_HTML)).thenReturn(document);
+        when(pageMapper.mapFromDocument(Fixtures.URL, document)).thenReturn(Fixtures.PAGE);
 
-        assertEquals(document, pageRepository.fetchPage(Fixtures.URL));
+        assertEquals(Fixtures.PAGE, pageRepository.fetchPage(Fixtures.URL));
 
         verify(document).setBaseUri(Fixtures.URL);
     }
 
     private static class Fixtures {
         private static final String URL = "url";
+        private static final Page PAGE = new Page();
         private static final String PAGE_HTML = "page html";
     }
 }

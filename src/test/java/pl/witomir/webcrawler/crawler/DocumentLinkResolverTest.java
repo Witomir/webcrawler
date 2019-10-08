@@ -2,8 +2,6 @@ package pl.witomir.webcrawler.crawler;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,14 +9,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import pl.witomir.webcrawler.domain.WrongDomainException;
 
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -47,44 +43,10 @@ class DocumentLinkResolverTest {
 
     @Test
     @MockitoSettings(strictness = Strictness.LENIENT)
-    void getAllLinksToSameDomainIgnoresBrokenLinks() {
-        Set<String> expectedLinks = Set.of(Fixtures.ABOUT_PAGE);
-        Document document = getSampleDocument();
-        document.appendChild((new Element("a")).attr("href", Fixtures.NON_URI_STRING));
-
-        when(urlUtil.getDomainName("")).thenThrow(mock(WrongDomainException.class)); // document will not return a malformed URL, it returns empty string instead
-        when(urlUtil.getDomainName(Fixtures.ABOUT_PAGE)).thenReturn(Fixtures.DOMAIN);
-        when(urlUtil.getDomainName(Fixtures.FULL_DOMAIN_URL)).thenReturn(Fixtures.DOMAIN);
-        when(urlUtil.removeAnchorFromLink(any())).thenCallRealMethod();
-
-        Set<String> allLinksToSameDomain = documentLinkResolver.getAllInternalLinks(document);
-
-        assertEquals(expectedLinks, allLinksToSameDomain);
-    }
-
-    @Test
-    @MockitoSettings(strictness = Strictness.LENIENT)
     void getAllExternalLinks() {
         Document document = getSampleDocument();
         Set<String> expectedLinks = Set.of(Fixtures.EXTERNAL_CONTACT_PAGE);
         when(urlUtil.getDomainName(anyString())).thenReturn(Fixtures.DOMAIN);
-        when(urlUtil.getDomainName(Fixtures.EXTERNAL_CONTACT_PAGE)).thenReturn("external");
-        when(urlUtil.getDomainName(Fixtures.FULL_DOMAIN_URL)).thenReturn(Fixtures.DOMAIN);
-
-        Set<String> allLinksToSameDomain = documentLinkResolver.getAllExternalLinks(document);
-
-        assertEquals(expectedLinks, allLinksToSameDomain);
-    }
-
-    @Test
-    @Disabled
-    @MockitoSettings(strictness = Strictness.LENIENT)
-    void getAllLinksToExternalDomainIgnoresBrokenLinks() {
-        Set<String> expectedLinks = Set.of(Fixtures.EXTERNAL_CONTACT_PAGE);
-        Document document = getSampleDocument();
-        document.appendChild((new Element("a")).attr("href", Fixtures.NON_URI_STRING));
-
-        when(urlUtil.getDomainName(anyString())).thenThrow(new RuntimeException());
         when(urlUtil.getDomainName(Fixtures.EXTERNAL_CONTACT_PAGE)).thenReturn("external");
         when(urlUtil.getDomainName(Fixtures.FULL_DOMAIN_URL)).thenReturn(Fixtures.DOMAIN);
 
@@ -119,7 +81,6 @@ class DocumentLinkResolverTest {
     private static class Fixtures {
         private static final String DOMAIN = "example.pl";
         private static final String FULL_DOMAIN_URL = "http://" + DOMAIN;
-        private static final String NON_URI_STRING = "example.pl with space";
         private static final String ABOUT_PAGE = "http://www.example.pl/about";
         private static final String SEARCH_PAGE = "http://www.example.pl/search";
         private static final String EXTERNAL_CONTACT_PAGE = "http://www.external.tv/contact";

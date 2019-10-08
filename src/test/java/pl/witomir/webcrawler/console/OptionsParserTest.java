@@ -18,7 +18,7 @@ class OptionsParserTest {
     private ArgumentsParser parser;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         parser = new ArgumentsParser(JCommander.newBuilder());
     }
 
@@ -33,7 +33,7 @@ class OptionsParserTest {
     }
 
     @Test
-    public void throwsExceptionWhenRanWithoutParameter() {
+    void throwsExceptionWhenRanWithoutParameter() {
         assertThrows(ParameterException.class, () -> parser.parseArguments(new String[]{}));
     }
 }

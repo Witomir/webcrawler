@@ -12,13 +12,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class MainTest {
 
     @Test
-    public void applicationContextLoadsAndThrowsExceptionAboutWrongParameters() {
+    void applicationContextLoadsAndThrowsExceptionAboutWrongParameters() {
         assertThrows(ParameterException.class, () -> Main.main(new String[]{}));
     }
 
     @Test
     @Disabled
-    public void applicationContextLoads() {
+    void runTheApplication() {
         Main.main(new String[]{"-starting-url", "https://wiprodigital.com/"});
     }
 }
